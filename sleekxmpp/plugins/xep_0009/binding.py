@@ -155,9 +155,9 @@ class rpcbase64(object):
 class rpctime(object):
 
     def __init__(self,data=None):
-        #assume string data is in iso format YYYYMMDDTHH:MM:SS
+        #assume string data is in iso format YYYY-MM-DDTHH:MM:SS
         if type(data) in (str, unicode):
-            self.timestamp = time.strptime(data,"%Y%m%dT%H:%M:%S")
+            self.timestamp = time.strptime(data,"%Y-%m-%dT%H:%M:%S")
         elif type(data) is time.struct_time:
             self.timestamp = data
         elif data is None:
@@ -167,7 +167,7 @@ class rpctime(object):
 
     def iso8601(self):
         #return a iso8601 string
-        return time.strftime("%Y%m%dT%H:%M:%S",self.timestamp)
+        return time.strftime("%Y-%m-%dT%H:%M:%S",self.timestamp)
 
     def __str__(self):
         return self.iso8601()
