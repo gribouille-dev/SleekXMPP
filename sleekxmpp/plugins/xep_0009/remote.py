@@ -720,7 +720,7 @@ class Remote(object):
     _lock = threading.RLock()
 
     @classmethod
-    def new_session_with_client(cls, client, callback=None):
+    def new_session_with_client(cls, client, callback=None, reattempt=True):
         '''
         Opens a new session with a given client.
 
@@ -748,7 +748,7 @@ class Remote(object):
         else:
             start_event_handler = callback
         client.add_event_handler("session_start", start_event_handler)
-        if client.connect():
+        if client.connect( reattempt=reattempt ):
             client.process(threaded=True)
         else:
             raise RemoteException("Could not connect to XMPP server!")
@@ -758,7 +758,7 @@ class Remote(object):
         return result
 
     @classmethod
-    def new_session(cls, jid, password, callback=None):
+    def new_session(cls, jid, password, callback=None, reattempt=True):
         '''
         Opens a new session and instantiates a new XMPP client.
 
@@ -775,5 +775,4 @@ class Remote(object):
         client.registerPlugin('xep_0030') # Service Discovery
         client.registerPlugin('xep_0060') # PubSub
         client.registerPlugin('xep_0199') # XMPP Ping
-        return cls.new_session_with_client(client, callback)
-
+        return cls.new_session_with_client(client, callback, reattempt)
